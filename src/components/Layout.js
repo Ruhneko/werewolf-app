@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import  io from 'socket.io-client'
-import { LOGOUT, USER_CONNECTED } from '../Events'
+import { LOGOUT, USER_CONNECTED, VERIFY_USER } from '../Events'
 import LoginForm from './LoginForm'
 import Game from './Game'
 
-const socketURL = "http://localhost:3231"
+const socketURL = "/"
 
 export default class Layout extends Component {
 
@@ -27,10 +27,26 @@ export default class Layout extends Component {
 
     initSocket = ()=>{
         const socket = io(socketURL)
+
         socket.on('connect', ()=>{
-            console.log("Connected")
+            if(this.state.user){
+                this.reconnect(socket)
+            }else{
+                console.log("Connected")
+            }
         })
+
         this.setState({socket})
+    }
+
+    reconnect = (socket) => {
+        socket.emit(VERIFY_USER, this.state.user.name, ({isUser, user})=>{
+            if(isUser){
+                this.setState({user:null})
+            }else{
+                this.setUser(user)
+            }
+        })
     }
 
     /*
