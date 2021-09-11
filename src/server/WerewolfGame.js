@@ -1,3 +1,5 @@
+const { WEREWORLF_START, CHANGE_TURN } = require("../Events");
+
 class WerewolfGame {
 
     static ROLE_WEREWOLF = "ROLE_WEREWOLF";
@@ -19,6 +21,7 @@ class WerewolfGame {
     constructor(users) {
         this.players = users;
         this.deck = [...WerewolfGame.BASE_DECK]
+        this.currentTimeout = null;
     }
 
     initialize() {
@@ -36,6 +39,40 @@ class WerewolfGame {
         })
 
         return this.players
+    }
+
+    mainGame(){
+        setTimeout(startWerewolf(),10000)
+    }
+    startWerewolf(){
+        io.emit(CHANGE_TURN,"ROLE_WEREWOLF")
+        setTimeout(startSeer(),20000)
+    }
+    startSeer(){
+        io.emit(CHANGE_TURN,"ROLE_SEER")
+        setTimeout(startRobber(),20000)
+    }
+    startRobber(){
+        io.emit(CHANGE_TURN,"ROLE_ROBBER")
+        setTimeout(startDiscussion(),20000)
+    }
+    startDiscussion(){
+        io.emit(CHANGE_TURN,"DISCUSSION")
+        this.currentTimeout = setTimeout(startVote(),300000)
+    }
+    startVote(){
+        io.emit(CHANGE_TURN,"START_VOTE")
+        setTimeout(endVote(),20000)
+    }
+    endVote(){
+        io.emit(CHANGE_TURN,"RESULTS")
+        setTimeout(endGame(),20000)
+    }
+    endGame(){
+        io.emit(RESET)
+    }
+    stopTimer(){
+        clearTimeout(this.currentTimeout);
     }
 
     getPlayerCount() {
