@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -47,7 +47,7 @@ module.exports = function(socket) {
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
             io.emit(INITIALIZE, connectedUsers)
-            werewolfGame.mainGame()
+            werewolfGame.mainGame(io)
         } else {
             console.log("Game has not started, not enough players.")
         }
@@ -65,7 +65,7 @@ module.exports = function(socket) {
         skipDiscussionCount++
         if (skipDiscussionCount == userCount){
             werewolfGame.stopTimer()
-            werewolfGame.startVote()
+            werewolfGame.startVote(io)
         }
     })
 
