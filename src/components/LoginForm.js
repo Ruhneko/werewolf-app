@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { VERIFY_USER, GAME_START } from '../Events';
+import { VERIFY_USER, GAME_START, TEMP_END } from '../Events';
 
 export default class LoginForm extends Component {
 
@@ -14,16 +14,21 @@ export default class LoginForm extends Component {
 
     }
 
-    setUser = ({user, isUser}) =>{
-        console.log(user, isUser)
-        if(isUser){
-            this.setError("User name taken")
+    setUser = ({user, isUser, gameStart}) =>{
+        if(!gameStart){
+            if(isUser){
+                this.setError("User name taken")
+            }
+            else{
+                this.setState({joined:true})
+                console.log(this.state)
+                this.props.setUser(user)
+            }
         }
         else{
-            this.setState({joined:true})
-            console.log(this.state)
-            this.props.setUser(user)
+            this.setError("A game is Ongoing")
         }
+   
     }
 
     handleJoin = (e)=>{
@@ -43,6 +48,12 @@ export default class LoginForm extends Component {
 
     handleChange = (e)=>{
         this.setState({nickname:e.target.value})
+    }
+
+    handleTempEnd = (e) => {
+        e.preventDefault()
+        const {socket} = this.props
+        socket.emit(TEMP_END)
     }
 
     setError = (error) =>{
@@ -70,6 +81,8 @@ export default class LoginForm extends Component {
                     <input type="submit" value="JOIN" onClick={this.handleJoin} disabled={joined}/>
                     <p/>
                     <input type="submit" value="START" onClick={this.handleStart} disabled={!joined}/>
+                    <p/>
+                    <input type="submit" value="END GAME" onClick={this.handleTempEnd} />
                 </form>
             </div>
         )

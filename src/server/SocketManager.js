@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -23,12 +23,18 @@ module.exports = function(socket) {
     
     //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
-        if(isUser(connectedUsers, nickname) || gameStart){
-            callback({isUser: true, user:null})
+        if(!gameStart){
+            if(isUser(connectedUsers, nickname)){
+                callback({gameStart: false, isUser: true, user:null})
+            }
+            else{
+                callback({gameStart: false, isUser: false, user:createUser({name:nickname})})
+            }
         }
         else{
-            callback({isUser: false, user:createUser({name:nickname})})
+            callback({gameStart: true, isUser:false, user:null})
         }
+   
     })
 
     //Verify Username
@@ -89,6 +95,14 @@ module.exports = function(socket) {
     socket.on(TYPING, ({isTyping})=>{
 		sendTypingFromUser(isTyping)
 	})
+
+    socket.on(TEMP_END, ()=>{
+        connectedUsers = {}
+        userCount = 0
+        gameStart = false
+        communityChat = createChat()
+        io.emit(RESET)
+    })
 }
 
 /*
