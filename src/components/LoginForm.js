@@ -36,7 +36,14 @@ export default class LoginForm extends Component {
 
         const {socket} = this.props
         const {nickname} = this.state
-        socket.emit(VERIFY_USER, nickname, this.setUser)
+        
+        if(nickname == '')
+        {
+            window.alert("Please enter a nickname!");
+            document.getElementsByClassName("joinBtn").disabled = true;
+        }
+        else
+            socket.emit(VERIFY_USER, nickname, this.setUser)
     }
 
     handleStart = (e)=>{
@@ -75,10 +82,10 @@ export default class LoginForm extends Component {
                         id="nickname"
                         value={nickname}
                         onChange = {this.handleChange}
-                        placeholder={'MYCoolUsername'}
+                        placeholder={'Enter Username'}
                         />
                     <div className="error">{error ? error:null}</div>
-                    <input type="submit" value="JOIN" onClick={this.handleJoin} disabled={joined}/>
+                    <input type="submit" className="joinBtn" value="JOIN" onClick={this.handleJoin} disabled={joined}/>
                     <p/>
                     <input type="submit" value="START" onClick={this.handleStart} disabled={!joined}/>
                     <p/>
