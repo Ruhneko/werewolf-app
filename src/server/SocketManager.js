@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -11,7 +11,8 @@ const WerewolfGame = require('./WerewolfGame.js')
 let connectedUsers = { }
 let userCount = 0
 let gameStart = false
-let werewolfGame;
+let werewolfGame = new WerewolfGame(connectedUsers)
+let skipDiscussionCount = 0
 
 let communityChat = createChat()
 
@@ -39,15 +40,33 @@ module.exports = function(socket) {
 
     //Verify Username
     socket.on(GAME_START, ()=>{
-        if(userCount >= 3){
-            io.emit(INITIALIZE, connectedUsers)
-            gameStart = true;
+        if (userCount >= 3) {
+            console.log("Game has started.")
             werewolfGame = new WerewolfGame(connectedUsers)
+            gameStart = true
+            connectedUsers = werewolfGame.initialize()
+            console.log("Assigned roles:", connectedUsers)
+            io.emit(INITIALIZE, connectedUsers)
+            werewolfGame.mainGame()
+        } else {
+            console.log("Game has not started, not enough players.")
         }
     })
 
-    socket.on(INITIALIZE, () => {
-        werewolfGame.initialize()
+    //User has done their "action"
+    socket.on(PLAYER_DONE, ()=>{
+        socket.user.playerDone = true
+        io.emit(UPDATE_USER, connectedUsers)
+    })
+
+    //Users skip discussion
+    socket.on(SKIP_DISCUSSION, ()=>{
+        io.to(socket.id).emit(SKIP_OK)
+        skipDiscussionCount++
+        if (skipDiscussionCount == userCount){
+            werewolfGame.stopTimer()
+            werewolfGame.startVote()
+        }
     })
 
     //User Connects with username
@@ -60,12 +79,11 @@ module.exports = function(socket) {
         sendTypingFromUser = sendTypingToChat(user.name)
 
         io.emit(USER_CONNECTED, connectedUsers)
-        console.log(connectedUsers)
     })
 
     //User disconnects
     socket.on('disconnect', ()=>{
-        if("user" in socket){
+        if ("user" in socket) {
             connectedUsers = removeUser(connectedUsers, socket.user.name)
             userCount--
 
@@ -73,7 +91,6 @@ module.exports = function(socket) {
             console.log("Disconnect")
             console.log(connectedUsers)
         }
-
     })
 
     //User logs out
