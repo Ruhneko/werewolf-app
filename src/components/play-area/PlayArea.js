@@ -4,22 +4,15 @@ import { Socket } from 'socket.io-client';
 
 export default class PlayArea extends Component {
 
-    constructor(props){
-        super(props)
-
-        this.state = {
-           players:[1,2,3],
-        };
-
-    }
-
     render() {
+        const {socket, user, connectedUsers} = this.props
+        console.log(connectedUsers)
         return(
             <div className="playArea">
                 <div className="god">PLAYER WAKE UP</div>
                 <div className="playArea-row">
                     <div className="player-card">
-                        <div className="player-card content">Werewolf</div>
+                        <div className="player-card content">USERNAME</div>
                         <button className="vote-button">Vote</button>
                     </div>
 

@@ -8,11 +8,11 @@ export default class Layout extends Component {
 
 
     render() {
-        const {socket, user} = this.props
+        const {socket, user, connectedUsers} = this.props
         return(
             <div className="container">
                 <div className="container-row">
-                    <PlayArea socket={socket} user={user} />
+                    <PlayArea socket={socket} user={user} connectedUsers = {connectedUsers}/>
                     <InfoPanel socket={socket} user={user} />
                 </div>
                 <ChatContainer socket={socket} user={user} />

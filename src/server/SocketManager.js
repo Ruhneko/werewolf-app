@@ -32,7 +32,7 @@ module.exports = function(socket){
     //Verify Username
     socket.on(GAME_START, ()=>{
         if(userCount >= 3){
-            io.emit(INITIALIZE)
+            io.emit(INITIALIZE, connectedUsers)
             gameStart = true;
         }
     })

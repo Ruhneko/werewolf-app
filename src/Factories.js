@@ -7,10 +7,14 @@ const { v4: uuidv4 } = require('uuid');
 *   @param {object}
 *           name {string}
 */
-const createUser = ({name=""} = {})=>(
+const createUser = ({name="", role="", playerDone=false, disconnected=false, voteID=""} = {})=>(
     {
         id:uuidv4(),
-        name
+        name,
+        role,
+        playerDone,
+        disconnected,
+        voteID,
     }
 )
 

@@ -15,7 +15,8 @@ export default class Layout extends Component {
         this.state = {
             socket: null,
             user:null,
-            start:null
+            start:null,
+            connectedUsers: null
         }
     }
 
@@ -39,8 +40,8 @@ export default class Layout extends Component {
             console.log("Connected")
         })
 
-        socket.on(INITIALIZE, ()=>{
-            this.setState({start:true})
+        socket.on(INITIALIZE, (connectedUsers)=>{
+            this.setState({start:true, connectedUsers})
         })
 
         this.setState({socket})
@@ -66,25 +67,17 @@ export default class Layout extends Component {
         this.setState({user})
     }
 
-    /*
-    * Sets the user property in state to null
-    */
-   logout = ()=>{
-       const { socket } = this.state
-       socket.emit(LOGOUT)
-       this.setState({user:null})
-   }
 
     render() {
         const { title } = this.props
-        const { socket, user, start} = this.state
+        const { socket, user, start, connectedUsers} = this.state
         return(
             <div className="container">
                 {
                     !user || !start ?
                     <LoginForm socket={socket} setUser={this.setUser}/>
                     :
-                    <Game socket={socket} user={user} logout={this.logout}/>
+                    <Game socket={socket} user={user} connectedUsers={connectedUsers}/>
                 }
             </div>
         )
