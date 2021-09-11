@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import  io from 'socket.io-client'
-import { INITIALIZE, LOGOUT, USER_CONNECTED, VERIFY_USER, RESET } from '../Events'
+import { INITIALIZE, LOGOUT, USER_CONNECTED, VERIFY_USER, RESET, UPDATE_USER } from '../Events'
 import LoginForm from './LoginForm'
 import Game from './Game'
 
@@ -46,6 +46,11 @@ export default class Layout extends Component {
 
         socket.on(RESET, ()=>{
             this.setState({user:null, start:null, connectedUsers:null})
+        })
+
+        socket.on(UPDATE_USER, (user) => {
+            this.setState({user})
+            console.log(user)
         })
 
         this.setState({socket})
