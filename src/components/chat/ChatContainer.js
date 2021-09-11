@@ -96,8 +96,7 @@ export default class ChatContainer extends Component {
         const {chat} = this.state
         console.log(chat)
         return(
-            <div className="container">
-                <div className="chat-room-container">
+            <div className="chat-room-container">
                     <div className ="chat-room">
                         <ChatHeading name="Werewolf Chat"/>
                         <Messages 
@@ -119,7 +118,6 @@ export default class ChatContainer extends Component {
                         />
                     </div>             
                 </div>
-            </div>
         )
     }
 }

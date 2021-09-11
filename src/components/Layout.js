@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import  io from 'socket.io-client'
-import { LOGOUT, USER_CONNECTED, VERIFY_USER } from '../Events'
+import { INITIALIZE, LOGOUT, USER_CONNECTED, VERIFY_USER } from '../Events'
 import LoginForm from './LoginForm'
 import Game from './Game'
 
-const socketURL = "/" //build
-//const socketURL = "http://localhost:3231" //dev
+//const socketURL = "/" //build
+const socketURL = "http://localhost:3231" //dev
 
 export default class Layout extends Component {
 
@@ -14,7 +14,8 @@ export default class Layout extends Component {
 
         this.state = {
             socket: null,
-            user:null
+            user:null,
+            start:null
         }
     }
 
@@ -36,6 +37,10 @@ export default class Layout extends Component {
                 console.log("Connected")
             }
             console.log("Connected")
+        })
+
+        socket.on(INITIALIZE, ()=>{
+            this.setState({start:true})
         })
 
         this.setState({socket})
@@ -72,11 +77,11 @@ export default class Layout extends Component {
 
     render() {
         const { title } = this.props
-        const { socket, user } = this.state
+        const { socket, user, start} = this.state
         return(
             <div className="container">
                 {
-                    !user ?
+                    !user || !start ?
                     <LoginForm socket={socket} setUser={this.setUser}/>
                     :
                     <Game socket={socket} user={user} logout={this.logout}/>

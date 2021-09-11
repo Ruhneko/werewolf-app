@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { VERIFY_USER } from '../Events';
+import { VERIFY_USER, GAME_START } from '../Events';
 
 export default class LoginForm extends Component {
 
@@ -8,7 +8,8 @@ export default class LoginForm extends Component {
 
         this.state = {
             nickname:"",
-            error:""
+            error:"",
+            joined: false
         };
 
     }
@@ -19,16 +20,25 @@ export default class LoginForm extends Component {
             this.setError("User name taken")
         }
         else{
+            this.setState({joined:true})
+            console.log(this.state)
             this.props.setUser(user)
         }
     }
 
-    handleSubmit = (e)=>{
+    handleJoin = (e)=>{
         e.preventDefault()
 
         const {socket} = this.props
         const {nickname} = this.state
         socket.emit(VERIFY_USER, nickname, this.setUser)
+    }
+
+    handleStart = (e)=>{
+        e.preventDefault()
+
+        const {socket} = this.props
+        socket.emit(GAME_START)
     }
 
     handleChange = (e)=>{
@@ -41,10 +51,10 @@ export default class LoginForm extends Component {
 
     render(){
 
-        const { nickname, error } = this.state
+        const { nickname, error, joined } = this.state
         return(
             <div className='login'>
-                <form onSubmit={this.handleSubmit} className="login-form">
+                <form className="login-form">
                     <label htmlFor="nickname">
                         <h2>Got a nickname?</h2>
                     </label>
@@ -57,6 +67,9 @@ export default class LoginForm extends Component {
                         placeholder={'MYCoolUsername'}
                         />
                     <div className="error">{error ? error:null}</div>
+                    <input type="submit" value="JOIN" onClick={this.handleJoin} disabled={joined}/>
+                    <p/>
+                    <input type="submit" value="START" onClick={this.handleStart} disabled={!joined}/>
                 </form>
             </div>
         )

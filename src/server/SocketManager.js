@@ -1,11 +1,14 @@
 const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
-       LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING} = require('../Events')
+       LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
+       GAME_START, INITIALIZE} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
 let connectedUsers = { }
+let userCount = 0
+let gameStart = false
 
 let communityChat = createChat()
 
@@ -16,9 +19,9 @@ module.exports = function(socket){
     let sendTypingFromUser;
 
 
-    //Verify Username
+    //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
-        if(isUser(connectedUsers, nickname)){
+        if(isUser(connectedUsers, nickname) || gameStart){
             callback({isUser: true, user:null})
         }
         else{
@@ -26,9 +29,18 @@ module.exports = function(socket){
         }
     })
 
+    //Verify Username
+    socket.on(GAME_START, ()=>{
+        if(userCount >= 3){
+            io.emit(INITIALIZE)
+            gameStart = true;
+        }
+    })
+
     //User Connects with username
     socket.on(USER_CONNECTED, (user) => {
         connectedUsers = addUser(connectedUsers, user)
+        userCount++
         socket.user = user
 
         sendMessageToChatFromUser = sendMessageToChat(user.name)
@@ -42,9 +54,11 @@ module.exports = function(socket){
     socket.on('disconnect', ()=>{
         if("user" in socket){
             connectedUsers = removeUser(connectedUsers, socket.user.name)
-  
+            userCount--
+
             io.emit(USER_DISCONNECTED, connectedUsers)
-            console.log("Disconnect" + connectedUsers)
+            console.log("Disconnect")
+            console.log(connectedUsers)
         }
 
     })
