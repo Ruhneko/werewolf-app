@@ -6,19 +6,21 @@ const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED,
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
+const WerewolfGame = require('./WerewolfGame.js')
+
 let connectedUsers = { }
 let userCount = 0
 let gameStart = false
+let werewolfGame;
 
 let communityChat = createChat()
 
-module.exports = function(socket){
+module.exports = function(socket) {
     console.log("Socket ID" + socket.id)
 
     let sendMessageToChatFromUser;
     let sendTypingFromUser;
-
-
+    
     //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
         if(isUser(connectedUsers, nickname) || gameStart){
@@ -34,7 +36,12 @@ module.exports = function(socket){
         if(userCount >= 3){
             io.emit(INITIALIZE, connectedUsers)
             gameStart = true;
+            werewolfGame = new WerewolfGame(connectedUsers)
         }
+    })
+
+    socket.on(INITIALIZE, () => {
+        werewolfGame.initialize()
     })
 
     //User Connects with username
@@ -144,6 +151,4 @@ function sendTypingToChat(user){
 		io.emit(TYPING, {user, isTyping})
 	}
 }
-
-
 
