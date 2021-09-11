@@ -9,6 +9,7 @@ export default class Layout extends Component {
 
     render() {
         const {socket, user, connectedUsers} = this.props
+        console.log(user)
         return(
             <div className="container">
                 <div className="container-row">

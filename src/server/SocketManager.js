@@ -20,7 +20,6 @@ module.exports = function(socket) {
 
     let sendMessageToChatFromUser;
     let sendTypingFromUser;
-    let updateUserClients;
     
     //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
@@ -46,8 +45,7 @@ module.exports = function(socket) {
             gameStart = true
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
-            updateUserClients()
-            io.emit(INITIALIZE)
+            io.emit(INITIALIZE, connectedUsers)
         } else {
             console.log("Game has not started, not enough players.")
         }
@@ -61,10 +59,8 @@ module.exports = function(socket) {
 
         sendMessageToChatFromUser = sendMessageToChat(user.name)
         sendTypingFromUser = sendTypingToChat(user.name)
-        updateUserClients = updateUserInfo(socket, socket.user)
 
         io.emit(USER_CONNECTED, connectedUsers)
-        console.log(connectedUsers)
     })
 
     //User disconnects
@@ -169,10 +165,3 @@ function sendTypingToChat(user){
 	}
 }
 
-function updateUserInfo(socket, user) {
-    console.log("UpdateUserInfo")
-    console.log(socket)
-    return () => {
-        io.to(socket).emit(UPDATE_USER, {user})
-    }
-}

@@ -42,16 +42,20 @@ export default class Layout extends Component {
 
         socket.on(INITIALIZE, (connectedUsers)=>{
             this.setState({start:true, connectedUsers})
+
+            const {user} = this.state
+           
+            Object.keys(connectedUsers).forEach(key =>{
+                if(connectedUsers[key].name == user.name){
+                    this.setState({user:connectedUsers[key]})
+                }
+            })
         })
 
         socket.on(RESET, ()=>{
             this.setState({user:null, start:null, connectedUsers:null})
         })
 
-        socket.on(UPDATE_USER, (user) => {
-            this.setState({user})
-            console.log(user)
-        })
 
         this.setState({socket})
     }
