@@ -5,7 +5,7 @@ import ROLE_SEER_IMAGE from '../../images/seer.png'
 import ROLE_ROBBER_IMAGE from '../../images/robber.png'
 import ROLE_VILLAGER_IMAGE from '../../images/villager.png'
 import PlayerButton from './PlayerButton'
-import { PLAYER_DONE, ROBBER_SWAP } from '../../Events'
+import { PLAYER_DONE, ROBBER_SWAP, PLAYER_VOTE} from '../../Events'
 
 export default class PlayerCard extends Component {
     constructor(){
@@ -16,7 +16,8 @@ export default class PlayerCard extends Component {
         }
 
         this.handleLook = this.handleLook.bind(this)
-        this.handlerob = this.handlerob.bind(this)
+        this.handleRob = this.handleRob.bind(this)
+        this.handleVote = this.handleVote.bind(this)
     }
 
     handleLook(userID){
@@ -25,9 +26,14 @@ export default class PlayerCard extends Component {
         socket.emit(PLAYER_DONE)
     }
 
-    handlerob(robber, robbed){
+    handleRob(robber, robbed){
         const {socket} = this.props
         socket.emit(ROBBER_SWAP, robber, robbed)
+    }
+
+    handleVote(voter, vote){
+        const {socket} = this.props
+        socket.emit(PLAYER_VOTE, voter, vote)
     }
 
     getPhoto(role){
@@ -64,7 +70,7 @@ export default class PlayerCard extends Component {
             <div className="player-card" style={divStyle}>
                 <div className="player-card content">{cardAccount.name}</div>
                 <PlayerButton turn = {turn}  cardAccount={cardAccount} user={user} 
-                handleLook={this.handleLook} handlerob={this.handlerob}/>
+                handleLook={this.handleLook} handleRob={this.handleRob} handleVote={this.handleVote} />
             </div>
         )
     }

@@ -56,11 +56,16 @@ export default class InfoPanel extends Component {
                     <img className="info-image" src={photo} alt={role_name}/>
                     {role_name}
                  </div>
-                <div className="desc-box">
-                    <div className="desc-tag">Description:</div>
-                    <div className="desc-main">{role_desc}</div>
-                </div>
-
+                 <div className="container-row">
+                    <div className="desc-box">
+                        <div className="desc-tag">Description:</div>
+                        <div className="desc-main">{role_desc}</div>
+                    </div>
+                    <div className ="vote-box">
+                        <div className="vote-tag">Vote:</div>
+                        <div className="vote-main">{user.voteID}</div>
+                    </div>
+                 </div>
             </div>
         )
     }

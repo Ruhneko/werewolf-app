@@ -43,6 +43,7 @@ class WerewolfGame {
         return this.players
     }
 
+
     updatePlayerDone(role){
         let playerlist = this.getPlayerList();
         playerlist.forEach(p => {
@@ -63,6 +64,28 @@ class WerewolfGame {
             }
             else if(this.players[p].id == robbed.id){
                 this.players[p].swappedRole = swapped_role
+            }
+        })
+        this.updateUsers(this.players)
+    }
+
+    vote(voter, vote){
+        let playerlist = this.getPlayerList();
+        playerlist.forEach(p => {
+            if(this.players[p].id == voter){
+                this.players[p].voteID = vote
+            }
+        })
+        this.updateUsers(this.players)
+    }
+
+    fillEmptyVotes(){
+        let playerlist = this.getPlayerList();
+        var personToLeft = this.players[playerlist[this.getPlayerCount() - 1]].name
+        playerlist.forEach(p => {
+            if(this.players[p].voteID = ""){
+                this.players[p].voteID = personToLeft
+                personToLeft = this.players[p].name
             }
         })
         this.updateUsers(this.players)
@@ -107,6 +130,7 @@ class WerewolfGame {
         setTimeout(() =>this.endVote(),20000)
     }
     endVote(){
+        this.fillEmptyVotes()
         io.emit(CHANGE_TURN,"RESULTS", 20, "And the winner is...")
         setTimeout(() =>this.endGame(),20000)
     }

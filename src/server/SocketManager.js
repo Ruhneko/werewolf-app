@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP, PLAYER_VOTE} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -116,6 +116,10 @@ module.exports = function(socket) {
 
     socket.on(ROBBER_SWAP, (robber, robbed) => {
         werewolfGame.rob(robber, robbed)
+    })
+
+    socket.on(PLAYER_VOTE, (voter, vote) =>{
+        werewolfGame.vote(voter,vote)
     })
 
     socket.on(TEMP_END, ()=>{

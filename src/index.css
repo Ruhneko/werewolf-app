@@ -144,6 +144,8 @@ input,textarea{
 
 .info-box{
   display: flex;
+  height:100%;
+  width:75%;
   flex-direction: column;
   flex-grow: 1;
 }
@@ -163,6 +165,24 @@ input,textarea{
   display: flex;
   flex-grow: 1
 }
+
+.vote-main{
+  display: flex;
+  flex-grow: 1
+}
+
+.vote-box{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1
+}
+
+.vote-tag{
+  display: flex;
+  flex-grow: 1
+}
+
+
 
 .info-image{
   display: flex;
