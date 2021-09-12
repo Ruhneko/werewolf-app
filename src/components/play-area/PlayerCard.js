@@ -35,7 +35,8 @@ export default class PlayerCard extends Component {
             case "ROLE_WEREWOLF": return ROLE_WEREWOLF_IMAGE; break;
             case "ROLE_SEER": return ROLE_SEER_IMAGE; break;
             case "ROLE_ROBBER": return ROLE_ROBBER_IMAGE; break
-            case "VILLAGER": return ROLE_VILLAGER_IMAGE; break
+            case "ROLE_VILLAGER": return ROLE_VILLAGER_IMAGE; break
+            default: return HIDDEN_IMAGE
         }
     }
 
