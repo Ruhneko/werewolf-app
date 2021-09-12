@@ -53,6 +53,31 @@ class WerewolfGame {
         this.updateUsers(this.players)
     }
 
+    rob(robber, robbed){
+        let playerlist = this.getPlayerList();
+        let swapped_role = robber.role
+        playerlist.forEach(p => {
+            if(this.players[p].id == robber.id){
+                this.players[p].swappedRole = robbed.role
+                this.players[p].playerDone = true
+            }
+            else if(this.players[p].id == robbed.id){
+                this.players[p].swappedRole = swapped_role
+            }
+        })
+        this.updateUsers(this.players)
+    }
+
+    finalize_roles(){
+        let playerlist = this.getPlayerList();
+        playerlist.forEach(p => {
+            if(this.players[p].swappedRole != ""){
+                this.players[p].role = this.players[p].swappedRole
+            }
+        })
+        this.updateUsers(this.players)
+    }
+
     mainGame(){
         io.emit(CHANGE_TURN,"VIEW", 10, "Welcome to Ultimate Werewolf")
         setTimeout(() => this.startWerewolf(),10000)
@@ -73,6 +98,7 @@ class WerewolfGame {
     }
     startDiscussion(){
         this.updatePlayerDone("ROLE_ROBBER")
+        this.finalize_roles()
         io.emit(CHANGE_TURN,"DISCUSSION", 300, "Wake up Everyone, Discussion Time")
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
     }

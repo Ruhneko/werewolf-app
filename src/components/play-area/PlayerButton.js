@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function({turn, cardAccount, user}){
+export default function({turn, cardAccount, user, handlelook, handlerob}){
 
     if(turn == "START_VOTE"){
         return(
@@ -14,7 +14,7 @@ export default function({turn, cardAccount, user}){
     }
     else if(turn == "ROLE_ROBBER" &&  user.role == "ROLE_ROBBER" && user.playerDone == false && cardAccount.id != user.id){
         return(
-            <button className="swap-button">Swap</button>
+            <button className="swap-button" onClick={()=>handlerob(user, cardAccount)}>Swap</button>
         )
     }
     else{

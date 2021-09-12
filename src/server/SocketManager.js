@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -114,6 +114,10 @@ module.exports = function(socket) {
 		sendTypingFromUser(isTyping)
 	})
 
+    socket.on(ROBBER_SWAP, (robber, robbed) => {
+        werewolfGame.rob(robber, robbed)
+    })
+
     socket.on(TEMP_END, ()=>{
         connectedUsers = {}
         userCount = 0
@@ -189,6 +193,5 @@ function updatedUsers(connectedUsers){
 	return (updatedUsers)=>{
 		connectedUsers = updatedUsers
         io.emit(UPDATE_USER, connectedUsers)
-        console.log(connectedUsers)
 	}
 }
