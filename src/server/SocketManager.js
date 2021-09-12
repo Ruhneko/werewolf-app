@@ -47,7 +47,7 @@ module.exports = function(socket) {
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
             io.emit(INITIALIZE, connectedUsers)
-            werewolfGame.mainGame(io)
+            werewolfGame.mainGame()
         } else {
             console.log("Game has not started, not enough players.")
         }

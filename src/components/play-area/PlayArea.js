@@ -49,7 +49,7 @@ export default class PlayArea extends Component {
         const { turn, seconds } = this.state
         const {socket, user, connectedUsers} = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
-            return (<PlayerCard turn={turn} user={connectedUsers[key]} />)
+            return (<PlayerCard turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
         })
 
         //console.log(Cards)

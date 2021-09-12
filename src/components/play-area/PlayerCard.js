@@ -16,7 +16,7 @@ export default class PlayerCard extends Component {
     }
 
     render() {
-        const {turn, user} = this.props
+        const {turn, cardAccount, user} = this.props
         const {photo} = this.state
 
         console.log(turn)
@@ -28,8 +28,8 @@ export default class PlayerCard extends Component {
 
         return(
             <div className="player-card" style={divStyle}>
-                <div className="player-card content">{user.name}</div>
-                <PlayerButton turn = {turn}/>
+                <div className="player-card content">{cardAccount.name}</div>
+                <PlayerButton turn = {turn}  cardAccount={cardAccount} user={user}/>
             </div>
         )
     }
