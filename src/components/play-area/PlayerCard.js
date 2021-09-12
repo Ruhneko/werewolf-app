@@ -11,14 +11,17 @@ export default class PlayerCard extends Component {
     constructor(){
         super()
 
-        this.state={}
+        this.state={
+            seer_look: ""
+        }
 
         this.handleLook = this.handleLook.bind(this)
         this.handlerob = this.handlerob.bind(this)
     }
 
-    handleLook(){
+    handleLook(userID){
         const {socket} = this.props
+        this.setState({seer_look: userID})
         socket.emit(PLAYER_DONE)
     }
 
@@ -27,12 +30,26 @@ export default class PlayerCard extends Component {
         socket.emit(ROBBER_SWAP, robber, robbed)
     }
 
+    getPhoto(role){
+        switch (role){
+            case "ROLE_WEREWOLF": return ROLE_WEREWOLF_IMAGE; break;
+            case "ROLE_SEER": return ROLE_SEER_IMAGE; break;
+            case "ROLE_ROBBER": return ROLE_ROBBER_IMAGE; break
+            case "VILLAGER": return ROLE_VILLAGER_IMAGE; break
+        }
+    }
+
     render() {
         const {socket, turn, cardAccount, user} = this.props
+        const {seer_look} = this.state
         var photo = HIDDEN_IMAGE
 
         if(turn == "ROLE_WEREWOLF" && user.role == "ROLE_WEREWOLF" && cardAccount.role == "ROLE_WEREWOLF"){
             photo = ROLE_WEREWOLF_IMAGE
+        }
+
+        if(turn == "ROLE_SEER" && seer_look == cardAccount.id && user.role == "ROLE_SEER"){
+            photo = this.getPhoto(cardAccount.role)
         }
 
         console.log(turn)

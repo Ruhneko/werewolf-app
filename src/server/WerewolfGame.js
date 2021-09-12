@@ -98,8 +98,8 @@ class WerewolfGame {
     }
     startDiscussion(){
         this.updatePlayerDone("ROLE_ROBBER")
-        this.finalize_roles()
         io.emit(CHANGE_TURN,"DISCUSSION", 300, "Wake up Everyone, Discussion Time")
+        this.finalize_roles()
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
     }
     startVote(){
