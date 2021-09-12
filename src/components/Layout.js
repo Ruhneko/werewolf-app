@@ -42,22 +42,33 @@ export default class Layout extends Component {
 
         socket.on(INITIALIZE, (connectedUsers)=>{
             this.setState({start:true, connectedUsers})
-
-            const {user} = this.state
-           
-            Object.keys(connectedUsers).forEach(key =>{
-                if(connectedUsers[key].name == user.name){
-                    this.setState({user:connectedUsers[key]})
-                }
-            })
+            this.updateUser()
         })
 
         socket.on(RESET, ()=>{
             this.setState({user:null, start:null, connectedUsers:null})
         })
 
+        socket.on(UPDATE_USER, (connectedUsers)=>{
+            this.setState({connectedUsers})
+            this.updateUser()
+        })
+
 
         this.setState({socket})
+    }
+
+    
+    updateUser = () => {
+        const {user, connectedUsers} = this.state
+           
+            Object.keys(connectedUsers).forEach(key =>{
+                if(connectedUsers[key].name == user.name){
+                    this.setState({user:connectedUsers[key]})
+                }
+            })
+
+        console.log(connectedUsers)
     }
 
     reconnect = (socket) => {

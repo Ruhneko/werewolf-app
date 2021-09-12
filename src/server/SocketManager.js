@@ -11,7 +11,7 @@ const WerewolfGame = require('./WerewolfGame.js')
 let connectedUsers = { }
 let userCount = 0
 let gameStart = false
-let werewolfGame = new WerewolfGame(connectedUsers)
+let werewolfGame = null
 let skipDiscussionCount = 0
 
 let communityChat = createChat()
@@ -21,6 +21,7 @@ module.exports = function(socket) {
 
     let sendMessageToChatFromUser;
     let sendTypingFromUser;
+    let updateUsers = updatedUsers(connectedUsers)
     
     //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
@@ -42,7 +43,7 @@ module.exports = function(socket) {
     socket.on(GAME_START, ()=>{
         if (userCount >= 3) {
             console.log("Game has started.")
-            werewolfGame = new WerewolfGame(connectedUsers)
+            werewolfGame = new WerewolfGame(connectedUsers, updateUsers)
             gameStart = true
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
@@ -122,6 +123,7 @@ module.exports = function(socket) {
     })
 }
 
+
 /*
 * Adds user to list passed in.
 * @param userList {Object} Object with key value pairs of users
@@ -183,3 +185,10 @@ function sendTypingToChat(user){
 	}
 }
 
+function updatedUsers(connectedUsers){
+	return (updatedUsers)=>{
+		connectedUsers = updatedUsers
+        io.emit(UPDATE_USER, connectedUsers)
+        console.log(connectedUsers)
+	}
+}

@@ -32,11 +32,11 @@ export default class PlayArea extends Component {
     }
 
     initTurn(){
-        const {socket} = this.props
+        const {socket, user} = this.props
 
         socket.on(CHANGE_TURN, (turn, seconds, god)=>{
             this.resetTimer(seconds+1)
-            this.setState({turn, seconds, god})                
+            this.setState({turn, seconds, god})
         })  
     }
 
@@ -49,7 +49,7 @@ export default class PlayArea extends Component {
         const { turn, seconds } = this.state
         const {socket, user, connectedUsers} = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
-            return (<PlayerCard turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
+            return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
         })
 
         //console.log(Cards)

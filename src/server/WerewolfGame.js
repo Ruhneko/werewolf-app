@@ -1,5 +1,5 @@
 const io = require('./index.js').io
-const { CHANGE_TURN, RESET } = require("../Events");
+const { CHANGE_TURN, RESET, UPDATE_USER } = require("../Events");
 
 class WerewolfGame {
 
@@ -19,10 +19,11 @@ class WerewolfGame {
 
     static BASE_PLAYER_SIZE = 3;
 
-    constructor(users) {
+    constructor(users, updateUsers) {
         this.players = users;
         this.deck = [...WerewolfGame.BASE_DECK]
         this.currentTimeout = null;
+        this.updateUsers = updateUsers
     }
 
     initialize() {
@@ -42,6 +43,16 @@ class WerewolfGame {
         return this.players
     }
 
+    updatePlayerDone(role){
+        let playerlist = this.getPlayerList();
+        playerlist.forEach(p => {
+            if(this.players[p].role == role){
+                this.players[p].playerDone = true
+            }
+        })
+        this.updateUsers(this.players)
+    }
+
     mainGame(){
         io.emit(CHANGE_TURN,"VIEW", 10, "Welcome to Ultimate Werewolf")
         setTimeout(() => this.startWerewolf(),10000)
@@ -51,14 +62,17 @@ class WerewolfGame {
         setTimeout(() => this.startSeer(),20000)
     }
     startSeer(){
+        this.updatePlayerDone("ROLE_WEREWOLF")
         io.emit(CHANGE_TURN,"ROLE_SEER", 20, "Wake up Seers")
         setTimeout(() =>this.startRobber(),20000)
     }
     startRobber(){
+        this.updatePlayerDone("ROLE_SEER")
         io.emit(CHANGE_TURN,"ROLE_ROBBER", 20, "Wake up Robbers")
         setTimeout(() =>this.startDiscussion(),20000)
     }
     startDiscussion(){
+        this.updatePlayerDone("ROLE_ROBBER")
         io.emit(CHANGE_TURN,"DISCUSSION", 300, "Wake up Everyone, Discussion Time")
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
     }

@@ -7,17 +7,14 @@ import ROLE_VILLAGER_IMAGE from '../../images/villager.png'
 import PlayerButton from './PlayerButton'
 
 export default class PlayerCard extends Component {
-    constructor(props){
-        super(props)
-
-        this.state = {
-            photo: HIDDEN_IMAGE,
-        }
-    }
 
     render() {
         const {turn, cardAccount, user} = this.props
-        const {photo} = this.state
+        var photo = HIDDEN_IMAGE
+
+        if(turn == "ROLE_WEREWOLF" && user.role == "ROLE_WEREWOLF" && cardAccount.role == "ROLE_WEREWOLF"){
+            photo = ROLE_WEREWOLF_IMAGE
+        }
 
         console.log(turn)
         const divStyle = {
