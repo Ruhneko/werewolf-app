@@ -55,12 +55,12 @@ export default class PlayerCard extends Component {
         var photo = HIDDEN_IMAGE
         var text = "CENTER DECK"
 
-        if(turn == "ROLE_WEREWOLF" && user.role == "ROLE_WEREWOLF" && user.card1 != ""){
+        if(turn == "ROLE_WEREWOLF" && user.role == "ROLE_WEREWOLF" && user.card1 != -1){
             photo = this.getPhoto(centerDeck[user.card1])
             text = "CARD 1"
         }
 
-        if(turn == "ROLE_SEER" && user.role == "ROLE_SEER"){
+        if(turn == "ROLE_SEER" && user.role == "ROLE_SEER" && user.card1 != -1 && user.card2 != -1){
             if(!change){
                 photo = this.getPhoto(centerDeck[user.card1])
                 text = "CARD 1"

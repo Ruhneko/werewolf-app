@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import parse from 'html-react-parser';
 import PlayerCard from './PlayerCard';
-import { CHANGE_TURN } from '../../Events';
 import Timer from './Timer';
 import CenterDeck from './CenterDeck';
 
@@ -16,40 +14,9 @@ export default class PlayArea extends Component {
         static ROLE_VILLAGER = "ROLE_VILLAGER";
     */
  
-    constructor(props){
-        super(props)
-    
-        this.state = {
-            turn:"",
-            seconds: 10,
-            god:"Welcome To Ultimate Werewolf"
-         };
-
-         this.initTurn = this.initTurn.bind(this)
-         this.resetTimer = this.resetTimer.bind(this)
-    }
-
-    componentDidMount(){
-         this.initTurn()
-    }
-
-    initTurn(){
-        const {socket, user} = this.props
-
-        socket.on(CHANGE_TURN, (turn, seconds, god)=>{
-            this.resetTimer(seconds+1)
-            this.setState({turn, seconds, god})
-        })  
-    }
-
-    resetTimer(time){
-        this.setState({seconds: time})
-    }
 
     render() {
-
-        const { turn, seconds } = this.state
-        const {socket, user, connectedUsers, centerDeck} = this.props
+        const {socket, user, connectedUsers, centerDeck, turn, seconds, god } = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
             if(connectedUsers[key].id != user.id){
                 return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
@@ -61,7 +28,7 @@ export default class PlayArea extends Component {
         return(
             <div className="playArea">
                 <div className="timer"><Timer key={seconds} seconds={seconds} /></div>
-                <div className="god">{this.state.god}</div>
+                <div className="god">{god}</div>
                 <div className="playArea-row">
                    {Cards}
                    <CenterDeck socket={socket} turn={turn} user={user} centerDeck={centerDeck}/>

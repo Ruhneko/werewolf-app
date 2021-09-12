@@ -47,7 +47,7 @@ export default class Layout extends Component {
         })
 
         socket.on(RESET, ()=>{
-            this.setState({user:null, start:null, connectedUsers:null})
+            this.setState({user:null, start:null, connectedUsers:null, centerDeck:[]})
         })
 
         socket.on(UPDATE_USER, (connectedUsers)=>{

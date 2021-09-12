@@ -19,11 +19,12 @@ class WerewolfGame {
 
     static BASE_PLAYER_SIZE = 3;
 
-    constructor(users, updateUsers) {
+    constructor(users, updateUsers, resetAll) {
         this.players = users;
         this.deck = [...WerewolfGame.BASE_DECK]
         this.currentTimeout = null;
         this.updateUsers = updateUsers
+        this.resetAll = resetAll
     }
 
     initialize() {
@@ -66,7 +67,6 @@ class WerewolfGame {
                 }
             }
         })
-        console.log(this.players)
         this.updateUsers(this.players)
     }
 
@@ -162,8 +162,9 @@ class WerewolfGame {
         setTimeout(() =>this.endGame(),20000)
     }
     endGame(){
-        io.emit(RESET)
+        this.resetAll()
     }
+    
     stopTimer(){
         clearTimeout(this.currentTimeout);
     }

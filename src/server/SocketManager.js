@@ -21,8 +21,22 @@ module.exports = function(socket) {
 
     let sendMessageToChatFromUser;
     let sendTypingFromUser;
-    let updateUsers = updatedUsers(connectedUsers)
-    
+
+    function updateUsers(updatedUsers){
+        connectedUsers = updatedUsers
+        io.emit(UPDATE_USER, connectedUsers)
+    }
+
+    function resetAll(){
+        connectedUsers = { }
+        userCount = 0
+        gameStart = false
+        werewolfGame = null
+        skipDiscussionCount = 0
+        communityChat = createChat()
+        io.emit(RESET)
+    }
+
     //Verify Username //edit for game start
     socket.on(VERIFY_USER, (nickname, callback)=>{
         if(!gameStart){
@@ -43,7 +57,7 @@ module.exports = function(socket) {
     socket.on(GAME_START, ()=>{
         if (userCount >= 3) {
             console.log("Game has started.")
-            werewolfGame = new WerewolfGame(connectedUsers, updateUsers)
+            werewolfGame = new WerewolfGame(connectedUsers, updateUsers, resetAll)
             gameStart = true
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
@@ -58,6 +72,7 @@ module.exports = function(socket) {
     //User has done their "action"
     socket.on(PLAYER_DONE, ()=>{
         socket.user.playerDone = true
+        console.log(connectedUsers)
         io.emit(UPDATE_USER, connectedUsers)
     })
 
@@ -67,7 +82,7 @@ module.exports = function(socket) {
         skipDiscussionCount++
         if (skipDiscussionCount == userCount){
             werewolfGame.stopTimer()
-            werewolfGame.startVote(io)
+            werewolfGame.startVote()
         }
     })
 
@@ -198,9 +213,3 @@ function sendTypingToChat(user){
 	}
 }
 
-function updatedUsers(connectedUsers){
-	return (updatedUsers)=>{
-		connectedUsers = updatedUsers
-        io.emit(UPDATE_USER, connectedUsers)
-	}
-}

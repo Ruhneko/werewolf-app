@@ -37,7 +37,8 @@ export default function({isCenterDeck, turn, cardAccount, user, handleLook, hand
             )
         }
 
-        else if(turn == "ROLE_SEER" &&  user.role == "ROLE_SEER" && user.playerDone == true && centerDeck.length >= 2){
+        else if(turn == "ROLE_SEER" &&  user.role == "ROLE_SEER" && user.playerDone == true && centerDeck.length >= 2 
+            && user.card1 != -1 && user.card2 != -1){
             return(
                 <button className="look-button" onClick={()=>handleLook2()}>Look at other Card</button>
             )

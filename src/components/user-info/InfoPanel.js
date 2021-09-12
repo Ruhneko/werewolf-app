@@ -1,14 +1,23 @@
 import React, { Component } from 'react'
-import day from '../../day.jpg'
 import HIDDEN_IMAGE from '../../images/back.jpg'
 import ROLE_WEREWOLF_IMAGE from '../../images/werewolf.png'
 import ROLE_SEER_IMAGE from '../../images/seer.png'
 import ROLE_ROBBER_IMAGE from '../../images/robber.png'
 import ROLE_VILLAGER_IMAGE from '../../images/villager.png'
+import { SKIP_DISCUSSION, SKIP_OK } from '../../Events'
 
 
 export default class InfoPanel extends Component {
 
+    constructor(props){
+        super(props)
+
+        this.state={
+            skip: false,
+        }
+
+        this.skipVote = this.skipVote.bind(this)
+    }
     getPhoto(role){
         switch (role){
             case "ROLE_WEREWOLF": return ROLE_WEREWOLF_IMAGE; break;
@@ -39,8 +48,18 @@ export default class InfoPanel extends Component {
         }
     }
 
+    skipVote(){
+        const {socket} = this.props
+        socket.emit(SKIP_DISCUSSION)
+        socket.on(SKIP_OK, ()=>{
+            this.setState({skip: true})
+        })
+    }
+
     render() {
-        const {socket, user} = this.props
+        const {socket, user, turn} = this.props
+        const {skip} = this.state
+
         var photo = ""
         var role_name = ""
         var role_desc = ""
@@ -63,6 +82,11 @@ export default class InfoPanel extends Component {
                     </div>
                     <div className ="vote-box">
                         <div className="vote-tag">Vote:</div>
+                        {
+                            turn == "DISCUSSION"
+                            ? <button onClick={()=>this.skipVote()} disabled={skip}>Skip Vote</button>
+                            : null
+                        }
                         <div className="vote-main">{user.voteID}</div>
                     </div>
                  </div>
