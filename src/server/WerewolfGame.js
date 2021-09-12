@@ -43,31 +43,31 @@ class WerewolfGame {
     }
 
     mainGame(){
-        io.emit(CHANGE_TURN,"VIEW", 10)
+        io.emit(CHANGE_TURN,"VIEW", 10, "Welcome to Ultimate Werewolf")
         setTimeout(() => this.startWerewolf(),10000)
     }
     startWerewolf(){
-        io.emit(CHANGE_TURN,"ROLE_WEREWOLF", 20)
+        io.emit(CHANGE_TURN,"ROLE_WEREWOLF", 20, "Wake up Werewolves")
         setTimeout(() => this.startSeer(),20000)
     }
     startSeer(){
-        io.emit(CHANGE_TURN,"ROLE_SEER", 20)
+        io.emit(CHANGE_TURN,"ROLE_SEER", 20, "Wake up Seers")
         setTimeout(() =>this.startRobber(),20000)
     }
     startRobber(){
-        io.emit(CHANGE_TURN,"ROLE_ROBBER", 20)
+        io.emit(CHANGE_TURN,"ROLE_ROBBER", 20, "Wake up Robbers")
         setTimeout(() =>this.startDiscussion(),20000)
     }
     startDiscussion(){
-        io.emit(CHANGE_TURN,"DISCUSSION", 300)
+        io.emit(CHANGE_TURN,"DISCUSSION", 300, "Wake up Everyone, Discussion Time")
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
     }
     startVote(){
-        io.emit(CHANGE_TURN,"START_VOTE", 20)
+        io.emit(CHANGE_TURN,"START_VOTE", 20, "Time to Vote")
         setTimeout(() =>this.endVote(),20000)
     }
     endVote(){
-        io.emit(CHANGE_TURN,"RESULTS", 20)
+        io.emit(CHANGE_TURN,"RESULTS", 20, "And the winner is...")
         setTimeout(() =>this.endGame(),20000)
     }
     endGame(){

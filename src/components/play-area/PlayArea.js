@@ -19,7 +19,8 @@ export default class PlayArea extends Component {
     
         this.state = {
             turn:"",
-            seconds: 10
+            seconds: 10,
+            god:"Welcome To Ultimate Werewolf"
          };
 
          this.initTurn = this.initTurn.bind(this)
@@ -33,14 +34,14 @@ export default class PlayArea extends Component {
     initTurn(){
         const {socket} = this.props
 
-        socket.on(CHANGE_TURN, (turn, seconds)=>{
-            this.resetTimer()
-            this.setState({turn, seconds})                
+        socket.on(CHANGE_TURN, (turn, seconds, god)=>{
+            this.resetTimer(seconds+1)
+            this.setState({turn, seconds, god})                
         })  
     }
 
-    resetTimer(){
-        this.setState({seconds: 0})
+    resetTimer(time){
+        this.setState({seconds: time})
     }
 
     render() {
@@ -56,7 +57,7 @@ export default class PlayArea extends Component {
         return(
             <div className="playArea">
                 <div className="timer"><Timer key={seconds} seconds={seconds} /></div>
-                <div className="god">PLAYER WAKE UP</div>
+                <div className="god">{this.state.god}</div>
                 <div className="playArea-row">
                    {Cards}
                 </div>        

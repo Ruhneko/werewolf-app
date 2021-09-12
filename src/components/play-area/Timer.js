@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class Timer extends Component {
     constructor() {
       super();
-      this.state = { time: {}, seconds: 0 };
+      this.state = { time: {}, secondsPassed: 1};
       this.timer = 0;
       this.startTimer = this.startTimer.bind(this);
       this.countDown = this.countDown.bind(this);
@@ -27,23 +27,22 @@ export default class Timer extends Component {
     }
   
     componentDidMount(){
-        this.setState({seconds: this.props.seconds})
-        let timeLeftVar = this.secondsToTime(this.state.seconds);
+        let timeLeftVar = this.secondsToTime(this.props.seconds);
         this.setState({ time: timeLeftVar});
     }
  
     startTimer() {
-      if (this.timer == 0 && this.state.seconds > 0) {
+      if (this.timer == 0 && this.props.seconds > 0) {
         this.timer = setInterval(this.countDown, 1000);
       }
     }
   
     countDown() {
       // Remove one second, set state so a re-render happens.
-      let seconds = this.state.seconds - 1;
+      let seconds = this.props.seconds - this.state.secondsPassed;
       this.setState({
         time: this.secondsToTime(seconds),
-        seconds: seconds,
+        secondsPassed: (this.state.secondsPassed+1),
       });
       
       // Check if we're at zero.
