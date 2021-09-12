@@ -83,10 +83,10 @@ class WerewolfGame {
         let playerlist = this.getPlayerList();
         var personToLeft = this.players[playerlist[this.getPlayerCount() - 1]].name
         playerlist.forEach(p => {
-            if(this.players[p].voteID = ""){
+            if(this.players[p].voteID == ""){
                 this.players[p].voteID = personToLeft
-                personToLeft = this.players[p].name
             }
+            personToLeft = this.players[p].name
         })
         this.updateUsers(this.players)
     }
