@@ -12,12 +12,13 @@ export default class PlayerCard extends Component {
         super()
 
         this.state={
-            seer_look: ""
+            seer_look: "",
         }
 
         this.handleLook = this.handleLook.bind(this)
         this.handleRob = this.handleRob.bind(this)
         this.handleVote = this.handleVote.bind(this)
+        this.getVotes = this.getVotes.bind(this)
     }
 
     handleLook(userID){
@@ -46,10 +47,23 @@ export default class PlayerCard extends Component {
         }
     }
 
+    getVotes()
+    {
+        const {connectedUsers, cardAccount} = this.props
+        let votes = 0
+        Object.keys(connectedUsers).map(key =>{
+            if(connectedUsers[key].voteID == cardAccount.name){
+                votes++
+            }
+        })
+        return votes
+    }
+
     render() {
         const {socket, turn, cardAccount, user} = this.props
         const {seer_look} = this.state
         var photo = HIDDEN_IMAGE
+        var votes = 0
 
         if(turn == "ROLE_WEREWOLF" && user.role == "ROLE_WEREWOLF" && cardAccount.role == "ROLE_WEREWOLF"){
             photo = ROLE_WEREWOLF_IMAGE
@@ -59,7 +73,10 @@ export default class PlayerCard extends Component {
             photo = this.getPhoto(cardAccount.role)
         }
 
-        console.log(turn)
+        if(turn == "RESULTS"){
+           votes = this.getVotes()
+        }
+        
         const divStyle = {
             backgroundImage: 'url(' + photo + ')',
             backgroundPosition: 'center',
@@ -68,9 +85,16 @@ export default class PlayerCard extends Component {
 
         return(
             <div className="player-card" style={divStyle}>
-                <div className="player-card content">{cardAccount.name}</div>
+                <div className="player-card content">
+                   {cardAccount.name + "\n"}
+                   {
+                   turn == "RESULTS"
+                   ? <div className="player-card-content">VOTES:{votes}</div>
+                   : null
+                }
+                </div>     
                 <PlayerButton isCenterDeck={false} turn = {turn}  cardAccount={cardAccount} user={user} 
-                handleLook={this.handleLook} handleRob={this.handleRob} handleVote={this.handleVote} />
+                    handleLook={this.handleLook} handleRob={this.handleRob} handleVote={this.handleVote} />
             </div>
         )
     }

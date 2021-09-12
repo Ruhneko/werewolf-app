@@ -117,6 +117,7 @@ input,textarea{
 }
 
 .player-card{
+  color: white;
   display:flex;
   flex-direction: column;
   flex-grow: 1;
@@ -126,11 +127,11 @@ input,textarea{
 
 .player-card content{
   display:flex;
-  height: 100%;
 }
 
 .vote-button {
   display:flex;
+  height: 100%;
 }
   
 .info-panel{

@@ -18,9 +18,7 @@ export default class PlayArea extends Component {
     render() {
         const {socket, user, connectedUsers, centerDeck, turn, seconds, god } = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
-            if(connectedUsers[key].id != user.id){
-                return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
-            }
+            return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} connectedUsers={connectedUsers} />)
         })
 
         //console.log(Cards)
