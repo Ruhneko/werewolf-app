@@ -4,6 +4,7 @@ import PlayerCard from './PlayerCard';
 import { CHANGE_TURN } from '../../Events';
 import Timer from './Timer';
 
+
 export default class PlayArea extends Component {
 
     /*

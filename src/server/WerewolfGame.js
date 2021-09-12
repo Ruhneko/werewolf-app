@@ -13,8 +13,6 @@ class WerewolfGame {
         WerewolfGame.ROLE_WEREWOLF,
         WerewolfGame.ROLE_ROBBER,
         WerewolfGame.ROLE_SEER,
-        WerewolfGame.ROLE_VILLAGER,
-        WerewolfGame.ROLE_VILLAGER
     ]
 
     static BASE_PLAYER_SIZE = 3;
