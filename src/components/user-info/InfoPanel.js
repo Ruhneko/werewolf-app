@@ -45,7 +45,7 @@ export default class InfoPanel extends Component {
         var role_name = ""
         var role_desc = ""
 
-        user.swappedRole != "" ? photo =  this.getPhoto(user.swappedRole) :  photo = this.getPhoto(user.role)
+        user.role == "ROLE_ROBBER" && user.swappedRole != "" ? photo =  this.getPhoto(user.swappedRole) :  photo = this.getPhoto(user.role)
         user.role == "ROLE_ROBBER" && user.swappedRole != "" ? role_name =  this.getRoleName(user.swappedRole) :  role_name = this.getRoleName(user.role)
         user.role == "ROLE_ROBBER" && user.swappedRole != "" ? role_desc =  this.getDescription(user.swappedRole) :  role_desc = this.getDescription(user.role)
 

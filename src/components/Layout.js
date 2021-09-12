@@ -16,7 +16,8 @@ export default class Layout extends Component {
             socket: null,
             user:null,
             start:null,
-            connectedUsers: null
+            connectedUsers: null,
+            centerDeck: []        
         }
     }
 
@@ -40,8 +41,8 @@ export default class Layout extends Component {
             console.log("Connected")
         })
 
-        socket.on(INITIALIZE, (connectedUsers)=>{
-            this.setState({start:true, connectedUsers})
+        socket.on(INITIALIZE, (connectedUsers, centerDeck)=>{
+            this.setState({start:true, connectedUsers, centerDeck})
             this.updateUser()
         })
 
@@ -94,14 +95,14 @@ export default class Layout extends Component {
 
     render() {
         const { title } = this.props
-        const { socket, user, start, connectedUsers} = this.state
+        const { socket, user, start, connectedUsers, centerDeck} = this.state
         return(
             <div className="container">
                 {
                     !user || !start ?
                     <LoginForm socket={socket} setUser={this.setUser}/>
                     :
-                    <Game socket={socket} user={user} connectedUsers={connectedUsers}/>
+                    <Game socket={socket} user={user} connectedUsers={connectedUsers} centerDeck={centerDeck}/>
                 }
             </div>
         )

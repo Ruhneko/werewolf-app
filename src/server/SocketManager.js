@@ -2,7 +2,7 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP, PLAYER_VOTE} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP, PLAYER_VOTE, GET_RANDOM} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
@@ -47,7 +47,8 @@ module.exports = function(socket) {
             gameStart = true
             connectedUsers = werewolfGame.initialize()
             console.log("Assigned roles:", connectedUsers)
-            io.emit(INITIALIZE, connectedUsers)
+            let centerDeck = werewolfGame.getCenterDeck()
+            io.emit(INITIALIZE, connectedUsers, centerDeck)
             werewolfGame.mainGame()
         } else {
             console.log("Game has not started, not enough players.")
@@ -120,6 +121,10 @@ module.exports = function(socket) {
 
     socket.on(PLAYER_VOTE, (voter, vote) =>{
         werewolfGame.vote(voter,vote)
+    })
+
+    socket.on(GET_RANDOM, (user, cards) =>{
+        werewolfGame.randomizeCards(user, cards)
     })
 
     socket.on(TEMP_END, ()=>{

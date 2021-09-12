@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
 *   @param {object}
 *           name {string}
 */
-const createUser = ({name="", role="", swappedRole="", playerDone=false, disconnected=false, voteID=""} = {})=>(
+const createUser = ({name="", role="", swappedRole="", playerDone=false, disconnected=false, voteID="", card1="", card2=""} = {})=>(
     {
         id:uuidv4(),
         name,
@@ -16,6 +16,8 @@ const createUser = ({name="", role="", swappedRole="", playerDone=false, disconn
         playerDone,
         disconnected,
         voteID,
+        card1,
+        card2
     }
 )
 

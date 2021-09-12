@@ -43,6 +43,33 @@ class WerewolfGame {
         return this.players
     }
 
+    getCenterDeck(){
+        return this.deck
+    }
+
+    randomizeCards(user, cards){
+        let playerlist = this.getPlayerList();
+        
+        console.log("cards:" + cards)
+        playerlist.forEach(p => {
+            if(this.players[p].id == user.id){
+                if(cards == 1){
+                    var key = Math.floor(Math.random() * this.deck.length);
+                    this.players[p].card1 = key
+                    console.log("key:" + key)
+                }
+                else if(cards== 2){
+                    var key = Math.floor(Math.random() * this.deck.length);
+                    this.players[p].card1 = key
+                    while ((key = Math.floor(Math.random() * this.deck.length)) == this.players[p].card1);
+                    this.players[p].card2 = key
+                }
+            }
+        })
+        console.log(this.players)
+        this.updateUsers(this.players)
+    }
+
 
     updatePlayerDone(role){
         let playerlist = this.getPlayerList();

@@ -69,7 +69,7 @@ export default class PlayerCard extends Component {
         return(
             <div className="player-card" style={divStyle}>
                 <div className="player-card content">{cardAccount.name}</div>
-                <PlayerButton turn = {turn}  cardAccount={cardAccount} user={user} 
+                <PlayerButton isCenterDeck={false} turn = {turn}  cardAccount={cardAccount} user={user} 
                 handleLook={this.handleLook} handleRob={this.handleRob} handleVote={this.handleVote} />
             </div>
         )

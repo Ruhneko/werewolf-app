@@ -3,6 +3,7 @@ import parse from 'html-react-parser';
 import PlayerCard from './PlayerCard';
 import { CHANGE_TURN } from '../../Events';
 import Timer from './Timer';
+import CenterDeck from './CenterDeck';
 
 
 export default class PlayArea extends Component {
@@ -48,9 +49,11 @@ export default class PlayArea extends Component {
     render() {
 
         const { turn, seconds } = this.state
-        const {socket, user, connectedUsers} = this.props
+        const {socket, user, connectedUsers, centerDeck} = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
-            return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
+            if(connectedUsers[key].id != user.id){
+                return (<PlayerCard socket={socket} turn={turn} cardAccount={connectedUsers[key]}  user={user} />)
+            }
         })
 
         //console.log(Cards)
@@ -61,6 +64,7 @@ export default class PlayArea extends Component {
                 <div className="god">{this.state.god}</div>
                 <div className="playArea-row">
                    {Cards}
+                   <CenterDeck socket={socket} turn={turn} user={user} centerDeck={centerDeck}/>
                 </div>        
             </div>
         )
