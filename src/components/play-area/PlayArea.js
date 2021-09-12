@@ -19,9 +19,11 @@ export default class PlayArea extends Component {
     
         this.state = {
             turn:"",
+            seconds: 10
          };
 
          this.initTurn = this.initTurn.bind(this)
+         this.resetTimer = this.resetTimer.bind(this)
     }
 
     componentDidMount(){
@@ -31,15 +33,19 @@ export default class PlayArea extends Component {
     initTurn(){
         const {socket} = this.props
 
-        socket.on(CHANGE_TURN, (turn)=>{
-            console.log(turn)
-            this.setState({turn:turn})
+        socket.on(CHANGE_TURN, (turn, seconds)=>{
+            this.resetTimer()
+            this.setState({turn, seconds})                
         })  
+    }
+
+    resetTimer(){
+        this.setState({seconds: 0})
     }
 
     render() {
 
-        const { turn } = this.state
+        const { turn, seconds } = this.state
         const {socket, user, connectedUsers} = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
             return (<PlayerCard turn={turn} user={connectedUsers[key]} />)
@@ -49,7 +55,7 @@ export default class PlayArea extends Component {
 
         return(
             <div className="playArea">
-                <div className="timer"><Timer seconds={10}/></div>
+                <div className="timer"><Timer key={seconds} seconds={seconds} /></div>
                 <div className="god">PLAYER WAKE UP</div>
                 <div className="playArea-row">
                    {Cards}

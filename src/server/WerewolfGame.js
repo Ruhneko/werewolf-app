@@ -43,31 +43,31 @@ class WerewolfGame {
     }
 
     mainGame(){
-        io.emit(CHANGE_TURN,"VIEW")
+        io.emit(CHANGE_TURN,"VIEW", 10)
         setTimeout(() => this.startWerewolf(),10000)
     }
     startWerewolf(){
-        io.emit(CHANGE_TURN,"ROLE_WEREWOLF")
+        io.emit(CHANGE_TURN,"ROLE_WEREWOLF", 20)
         setTimeout(() => this.startSeer(),20000)
     }
     startSeer(){
-        io.emit(CHANGE_TURN,"ROLE_SEER")
+        io.emit(CHANGE_TURN,"ROLE_SEER", 20)
         setTimeout(() =>this.startRobber(),20000)
     }
     startRobber(){
-        io.emit(CHANGE_TURN,"ROLE_ROBBER")
+        io.emit(CHANGE_TURN,"ROLE_ROBBER", 20)
         setTimeout(() =>this.startDiscussion(),20000)
     }
     startDiscussion(){
-        io.emit(CHANGE_TURN,"DISCUSSION")
+        io.emit(CHANGE_TURN,"DISCUSSION", 300)
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
     }
     startVote(){
-        io.emit(CHANGE_TURN,"START_VOTE")
+        io.emit(CHANGE_TURN,"START_VOTE", 20)
         setTimeout(() =>this.endVote(),20000)
     }
     endVote(){
-        io.emit(CHANGE_TURN,"RESULTS")
+        io.emit(CHANGE_TURN,"RESULTS", 20)
         setTimeout(() =>this.endGame(),20000)
     }
     endGame(){
