@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import parse from 'html-react-parser';
-import { Socket } from 'socket.io-client';
 import PlayerCard from './PlayerCard';
 import { CHANGE_TURN } from '../../Events';
+import Timer from './Timer';
 
 export default class PlayArea extends Component {
 
@@ -32,15 +32,14 @@ export default class PlayArea extends Component {
         const {socket} = this.props
 
         socket.on(CHANGE_TURN, (turn)=>{
-            this.setState({turn:turn})
             console.log(turn)
+            this.setState({turn:turn})
         })  
     }
 
     render() {
 
         const { turn } = this.state
-        console.log(turn)
         const {socket, user, connectedUsers} = this.props
         let Cards = Object.keys(connectedUsers).map(key=> {
             return (<PlayerCard turn={turn} user={connectedUsers[key]} />)
@@ -50,7 +49,7 @@ export default class PlayArea extends Component {
 
         return(
             <div className="playArea">
-                <div className="timer">TIMER</div>
+                <div className="timer"><Timer seconds={10}/></div>
                 <div className="god">PLAYER WAKE UP</div>
                 <div className="playArea-row">
                    {Cards}

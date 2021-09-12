@@ -1,10 +1,25 @@
 import React, { Component } from 'react'
-import photo from '../../images/back.jpg'
+import HIDDEN_IMAGE from '../../images/back.jpg'
+import ROLE_WEREWOLF_IMAGE from '../../images/werewolf.png'
+import ROLE_SEER_IMAGE from '../../images/seer.png'
+import ROLE_ROBBER_IMAGE from '../../images/robber.png'
+import ROLE_VILLAGER_IMAGE from '../../images/villager.png'
+import PlayerButton from './PlayerButton'
 
 export default class PlayerCard extends Component {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            photo: HIDDEN_IMAGE,
+        }
+    }
 
     render() {
-        const {user} = this.props
+        const {turn, user} = this.props
+        const {photo} = this.state
+
+        console.log(turn)
         const divStyle = {
             backgroundImage: 'url(' + photo + ')',
             backgroundPosition: 'center',
@@ -14,8 +29,7 @@ export default class PlayerCard extends Component {
         return(
             <div className="player-card" style={divStyle}>
                 <div className="player-card content">{user.name}</div>
-                <button className="vote-button">Vote</button>
-
+                <PlayerButton turn = {turn}/>
             </div>
         )
     }
