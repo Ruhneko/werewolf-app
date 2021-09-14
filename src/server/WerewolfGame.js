@@ -102,6 +102,9 @@ class WerewolfGame {
             if(this.players[p].id == voter){
                 this.players[p].voteID = vote
             }
+            if(this.players[p].id == vote){
+                this.players[p].voteCount += 1;
+            }
         })
         this.updateUsers(this.players)
     }
@@ -158,7 +161,37 @@ class WerewolfGame {
     }
     endVote(){
         this.fillEmptyVotes()
-        io.emit(CHANGE_TURN,"RESULTS", 20, "And the winner is...")
+        let playerlist = this.getPlayerList();
+        let voteList = [];
+        let high = 0;
+        let wwVote = false;
+        let message = ""
+        playerlist.forEach(p => {
+            if(this.players[p].voteCount > high){
+                high = this.players[p].voteCount;
+                voteList.length = 0;
+                voteList.push(this.players[p]);
+            }
+            else if(this.players[p].voteCount ==  high) {
+                voteList.push(this.players[p]);
+            }
+        })
+        voteList.forEach(p => {
+            if(voteList.role === this.ROLE_WEREWOLF){
+                wwVote = true;
+            }
+        })
+        if(wwVote){
+            message = "And the winner is... VILLAGERS"
+        } else{
+            if(high == 1){
+                message = "And the winner is... VILLAGERS"
+            } else{
+                message = "And the winner is... WEREWOLVES"
+            }
+        }
+
+        io.emit(CHANGE_TURN,"RESULTS", 20, message)
         setTimeout(() =>this.endGame(),20000)
     }
     endGame(){
