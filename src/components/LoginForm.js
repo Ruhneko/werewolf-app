@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import { VERIFY_USER, GAME_START, TEMP_END } from '../Events';
+import { VERIFY_USER, GAME_START, TEMP_END } from '../Events'
+import WEREWOLF_VECTOR from '../images/werewolf-vector.png';
+import Button from 'react-bootstrap/Button';
 
 export default class LoginForm extends Component {
 
@@ -72,9 +74,10 @@ export default class LoginForm extends Component {
         const { nickname, error, joined } = this.state
         return(
             <div className='login'>
-                <form className="login-form">
+                <form className="login-form" >
+                    <img src ={WEREWOLF_VECTOR}/>
                     <label htmlFor="nickname">
-                        <h2>Got a nickname?</h2>
+                        <h2><b>Got a nickname?</b></h2>
                     </label>
                     <input 
                         ref={(input)=>{this.textInput = input}} 
@@ -85,11 +88,11 @@ export default class LoginForm extends Component {
                         placeholder={'Enter Username'}
                         />
                     <div className="error">{error ? error:null}</div>
-                    <input type="submit" className="joinBtn" value="JOIN" onClick={this.handleJoin} disabled={joined}/>
+                    <Button type="submit" className="joinBtn" onClick={this.handleJoin} disabled={joined}> Join Game </Button>
                     <p/>
-                    <input type="submit" value="START" onClick={this.handleStart} disabled={!joined}/>
+                    <Button type="submit" onClick={this.handleStart} disabled={!joined}>Start Game</Button>
                     <p/>
-                    <input type="submit" value="END GAME" onClick={this.handleTempEnd} />
+                    <Button type="submit" value="END GAME" variant="danger" onClick={this.handleTempEnd}>End Game</Button>
                 </form>
             </div>
         )
