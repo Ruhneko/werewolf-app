@@ -1,22 +1,32 @@
 {
   "files": {
-    "main.css": "/static/css/main.90c3fe5f.chunk.css",
-    "main.js": "/static/js/main.ff0f4092.chunk.js",
-    "main.js.map": "/static/js/main.ff0f4092.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.fa61c8c1.js",
-    "runtime-main.js.map": "/static/js/runtime-main.fa61c8c1.js.map",
-    "static/js/2.3dc440ae.chunk.js": "/static/js/2.3dc440ae.chunk.js",
-    "static/js/2.3dc440ae.chunk.js.map": "/static/js/2.3dc440ae.chunk.js.map",
-    "static/js/3.56b22592.chunk.js": "/static/js/3.56b22592.chunk.js",
-    "static/js/3.56b22592.chunk.js.map": "/static/js/3.56b22592.chunk.js.map",
+    "main.css": "/static/css/main.50c6440b.chunk.css",
+    "main.js": "/static/js/main.d29bd384.chunk.js",
+    "main.js.map": "/static/js/main.d29bd384.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.014b5ad7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.014b5ad7.js.map",
+    "static/css/2.818011ed.chunk.css": "/static/css/2.818011ed.chunk.css",
+    "static/js/2.b3a8fe68.chunk.js": "/static/js/2.b3a8fe68.chunk.js",
+    "static/js/2.b3a8fe68.chunk.js.map": "/static/js/2.b3a8fe68.chunk.js.map",
+    "static/js/3.b3de77a5.chunk.js": "/static/js/3.b3de77a5.chunk.js",
+    "static/js/3.b3de77a5.chunk.js.map": "/static/js/3.b3de77a5.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.90c3fe5f.chunk.css.map": "/static/css/main.90c3fe5f.chunk.css.map",
-    "static/js/2.3dc440ae.chunk.js.LICENSE.txt": "/static/js/2.3dc440ae.chunk.js.LICENSE.txt"
+    "static/css/2.818011ed.chunk.css.map": "/static/css/2.818011ed.chunk.css.map",
+    "static/css/main.50c6440b.chunk.css.map": "/static/css/main.50c6440b.chunk.css.map",
+    "static/js/2.b3a8fe68.chunk.js.LICENSE.txt": "/static/js/2.b3a8fe68.chunk.js.LICENSE.txt",
+    "static/media/back.163f6391.jpg": "/static/media/back.163f6391.jpg",
+    "static/media/index.css": "/static/media/day.48d9cabb.jpg",
+    "static/media/robber.4a5fb38a.png": "/static/media/robber.4a5fb38a.png",
+    "static/media/seer.eac01de8.png": "/static/media/seer.eac01de8.png",
+    "static/media/villager.60e02a77.png": "/static/media/villager.60e02a77.png",
+    "static/media/werewolf-vector.79af0c25.png": "/static/media/werewolf-vector.79af0c25.png",
+    "static/media/werewolf.650f642e.png": "/static/media/werewolf.650f642e.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.fa61c8c1.js",
-    "static/js/2.3dc440ae.chunk.js",
-    "static/css/main.90c3fe5f.chunk.css",
-    "static/js/main.ff0f4092.chunk.js"
+    "static/js/runtime-main.014b5ad7.js",
+    "static/css/2.818011ed.chunk.css",
+    "static/js/2.b3a8fe68.chunk.js",
+    "static/css/main.50c6440b.chunk.css",
+    "static/js/main.d29bd384.chunk.js"
   ]
 }

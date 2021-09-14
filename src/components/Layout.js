@@ -4,8 +4,8 @@ import { INITIALIZE, LOGOUT, USER_CONNECTED, VERIFY_USER, RESET, UPDATE_USER } f
 import LoginForm from './LoginForm'
 import Game from './Game'
 
-//const socketURL = "/" //build
-const socketURL = "http://localhost:3231" //dev
+const socketURL = "/" //build
+//const socketURL = "http://localhost:3231" //dev
 
 export default class Layout extends Component {
 
