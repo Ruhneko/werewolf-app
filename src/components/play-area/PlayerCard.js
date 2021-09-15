@@ -74,6 +74,7 @@ export default class PlayerCard extends Component {
         }
 
         if(turn == "RESULTS"){
+           photo = this.getPhoto(cardAccount.role)
            votes = this.getVotes()
         }
         
