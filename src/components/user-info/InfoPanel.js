@@ -16,7 +16,7 @@ export default class InfoPanel extends Component {
             skip: false,
         }
 
-        this.skipVote = this.skipVote.bind(this)
+        this.skipDiscussion = this.skipDiscussion.bind(this)
     }
     getPhoto(role){
         switch (role){
@@ -48,7 +48,7 @@ export default class InfoPanel extends Component {
         }
     }
 
-    skipVote(){
+    skipDiscussion(){
         const {socket} = this.props
         socket.emit(SKIP_DISCUSSION)
         socket.on(SKIP_OK, ()=>{
@@ -84,7 +84,7 @@ export default class InfoPanel extends Component {
                         <div className="vote-tag">Vote:</div>
                         {
                             turn == "DISCUSSION"
-                            ? <button onClick={()=>this.skipVote()} disabled={skip}>Skip Vote</button>
+                            ? <button onClick={()=>this.skipDiscussion()} disabled={skip}>Skip Discussion</button>
                             : null
                         }
                         <div className="vote-main">{user.voteID}</div>

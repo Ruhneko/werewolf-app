@@ -2,13 +2,15 @@ const io = require('./index.js').io
 
 const {VERIFY_USER, USER_CONNECTED, USER_DISCONNECTED, 
        LOGOUT, COMMUNITY_CHAT, MESSAGE_RECEIVED, MESSAGE_SENT, TYPING,
-       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP, PLAYER_VOTE, GET_RANDOM} = require('../Events')
+       GAME_START, INITIALIZE, TEMP_END, RESET, UPDATE_USER, PLAYER_DONE, 
+       SKIP_DISCUSSION, SKIP_OK, ROBBER_SWAP, PLAYER_VOTE, GET_RANDOM, CHANGE_TURN} = require('../Events')
 
 const { createUser, createMessage, createChat } = require('../Factories')
 
 const WerewolfGame = require('./WerewolfGame.js')
 
 let connectedUsers = { }
+let disconnectedUsers = { }
 let userCount = 0
 let gameStart = false
 let werewolfGame = null
@@ -24,11 +26,12 @@ module.exports = function(socket) {
 
     function updateUsers(updatedUsers){
         connectedUsers = updatedUsers
-        io.emit(UPDATE_USER, connectedUsers)
+        io.emit(UPDATE_USER, connectedUsers, gameStart)
     }
 
     function resetAll(){
         connectedUsers = { }
+        disconnectedUsers = { }
         userCount = 0
         gameStart = false
         werewolfGame = null
@@ -48,9 +51,14 @@ module.exports = function(socket) {
             }
         }
         else{
-            callback({gameStart: true, isUser:false, user:null})
+            if(isUser(disconnectedUsers, nickname)){
+                callback({gameStart: true, isUser: true, user:disconnectedUsers[nickname]})
+                disconnectedUsers = removeUser(disconnectedUsers, nickname)
+            }
+            else{
+                callback({gameStart: true, isUser:false, user:null})
+            }
         }
-   
     })
 
     //Verify Username
@@ -73,7 +81,7 @@ module.exports = function(socket) {
     socket.on(PLAYER_DONE, ()=>{
         socket.user.playerDone = true
         console.log(connectedUsers)
-        io.emit(UPDATE_USER, connectedUsers)
+        io.emit(UPDATE_USER, connectedUsers, gameStart)
     })
 
     //Users skip discussion
@@ -82,6 +90,7 @@ module.exports = function(socket) {
         skipDiscussionCount++
         if (skipDiscussionCount == userCount){
             werewolfGame.stopTimer()
+            werewolfGame.cleartTimer()
             werewolfGame.startVote()
         }
     })
@@ -95,18 +104,22 @@ module.exports = function(socket) {
         sendMessageToChatFromUser = sendMessageToChat(user.name)
         sendTypingFromUser = sendTypingToChat(user.name)
 
-        io.emit(USER_CONNECTED, connectedUsers)
+        io.emit(UPDATE_USER, connectedUsers, gameStart)
+        if(gameStart)
+            io.to(socket.id).emit(CHANGE_TURN, werewolfGame.currentTurn, werewolfGame.secondsLeft, werewolfGame.message)
     })
 
     //User disconnects
     socket.on('disconnect', ()=>{
         if ("user" in socket) {
+            if(gameStart)
+                disconnectedUsers = addUser(disconnectedUsers, socket.user)
             connectedUsers = removeUser(connectedUsers, socket.user.name)
             userCount--
 
             io.emit(USER_DISCONNECTED, connectedUsers)
             console.log("Disconnect")
-            console.log(connectedUsers)
+            console.log(disconnectedUsers)
         }
     })
 

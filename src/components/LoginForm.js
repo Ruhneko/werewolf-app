@@ -23,12 +23,17 @@ export default class LoginForm extends Component {
             }
             else{
                 this.setState({joined:true})
-                console.log(this.state)
                 this.props.setUser(user)
             }
         }
         else{
-            this.setError("A game is Ongoing")
+            if(isUser){
+                this.setState({joined:true})
+                this.props.setUser(user)
+            }
+            else{
+                this.setError("A game is Ongoing")
+            }
         }
    
     }

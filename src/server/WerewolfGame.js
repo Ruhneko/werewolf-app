@@ -25,6 +25,10 @@ class WerewolfGame {
         this.currentTimeout = null;
         this.updateUsers = updateUsers
         this.resetAll = resetAll
+        this.currentTurn = "";
+        this.message = "Welcome to Ultimate Werewolf";
+        this.timer = 0;
+        this.secondsLeft = 0;
     }
 
     initialize() {
@@ -46,6 +50,18 @@ class WerewolfGame {
 
     getCenterDeck(){
         return this.deck
+    }
+
+    getSecondsLeft(){
+        return this.secondsLeft
+    }
+
+    getMessage(){
+        return this.message
+    }
+
+    getTurn(){
+        return this.currentTurn
     }
 
     randomizeCards(user, cards){
@@ -131,35 +147,90 @@ class WerewolfGame {
         this.updateUsers(this.players)
     }
 
+    cleartTimer(){
+        this.secondsLeft = 0
+        clearInterval(this.timer)
+    }
+
+    countDown() {
+        // Remove one second
+        this.secondsLeft  = this.secondsLeft - 1;
+        // Check if we're at zero.
+        if (this.secondsLeft <= 0) { 
+            this.cleartTimer()
+        }
+    }
+
+    startTimer(){
+        this.timer = setInterval(()=>this.countDown(), 1000);
+    }
+
     mainGame(){
         io.emit(CHANGE_TURN,"VIEW", 10, "Welcome to Ultimate Werewolf")
+        this.currentTurn = "VIEW"
+        this.secondsLeft = 10
+        this.message = "Welcome to Ultimate Werewolf"
+        this.startTimer()
         setTimeout(() => this.startWerewolf(),10000)
+        
+       
     }
     startWerewolf(){
+        this.cleartTimer()
         io.emit(CHANGE_TURN,"ROLE_WEREWOLF", 20, "Wake up Werewolves")
+        this.currentTurn = "ROLE_WEREWOLF"
+        this.secondsLeft = 20
+        this.message =  "Wake up Werewolves"
+        this.startTimer()
         setTimeout(() => this.startSeer(),20000)
+        
     }
     startSeer(){
+        this.cleartTimer()
         this.updatePlayerDone("ROLE_WEREWOLF")
         io.emit(CHANGE_TURN,"ROLE_SEER", 20, "Wake up Seers")
+        this.currentTurn = "ROLE_SEER"
+        this.secondsLeft = 20
+        this.message =   "Wake up Seers"
+        this.startTimer()
         setTimeout(() =>this.startRobber(),20000)
+        
     }
     startRobber(){
+        this.cleartTimer()
         this.updatePlayerDone("ROLE_SEER")
         io.emit(CHANGE_TURN,"ROLE_ROBBER", 20, "Wake up Robbers")
+        this.currentTurn = "ROLE_ROBBER"
+        this.secondsLeft = 20
+        this.message =   "Wake up Robbers"
+        this.startTimer()
         setTimeout(() =>this.startDiscussion(),20000)
+       
     }
     startDiscussion(){
+        this.cleartTimer()
         this.updatePlayerDone("ROLE_ROBBER")
         io.emit(CHANGE_TURN,"DISCUSSION", 300, "Wake up Everyone, Discussion Time")
+        this.currentTurn = "DISCUSSION"
+        this.secondsLeft = 300
+        this.message =   "Wake up Everyone, Discussion Time"
+        this.startTimer()
         this.finalize_roles()
         this.currentTimeout = setTimeout(() =>this.startVote(),300000)
+       
     }
     startVote(){
+        this.cleartTimer()
         io.emit(CHANGE_TURN,"START_VOTE", 20, "Time to Vote")
+        this.currentTurn = "START_VOTE"
+        this.secondsLeft = 20
+        this.message =   "Time to Vote"
+        this.startTimer()
         setTimeout(() =>this.endVote(),20000)
+       
     }
     endVote(){
+        this.cleartTimer()
         this.fillEmptyVotes()
         let playerlist = this.getPlayerList();
         let voteList = [];
@@ -192,7 +263,12 @@ class WerewolfGame {
         }
 
         io.emit(CHANGE_TURN,"RESULTS", 20, message)
+        this.currentTurn = "RESULTS"
+        this.secondsLeft == 20
+        this.message =   message
+        this.startTimer()
         setTimeout(() =>this.endGame(),20000)
+       
     }
     endGame(){
         this.resetAll()

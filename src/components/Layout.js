@@ -50,8 +50,8 @@ export default class Layout extends Component {
             this.setState({user:null, start:null, connectedUsers:null, centerDeck:[]})
         })
 
-        socket.on(UPDATE_USER, (connectedUsers)=>{
-            this.setState({connectedUsers})
+        socket.on(UPDATE_USER, (connectedUsers, gameStart)=>{
+            this.setState({connectedUsers, start:gameStart})
             this.updateUser()
         })
 
@@ -63,11 +63,13 @@ export default class Layout extends Component {
     updateUser = () => {
         const {user, connectedUsers} = this.state
            
+        if(user){
             Object.keys(connectedUsers).forEach(key =>{
                 if(connectedUsers[key].name == user.name){
                     this.setState({user:connectedUsers[key]})
                 }
             })
+        }
 
         console.log(connectedUsers)
     }
@@ -92,6 +94,10 @@ export default class Layout extends Component {
         this.setState({user})
     }
 
+    setStart = (start) =>{
+        this.setState({start})
+    }
+
 
     render() {
         const { title } = this.props
@@ -100,7 +106,7 @@ export default class Layout extends Component {
             <div className="container">
                 {
                     !user || !start ?
-                    <LoginForm socket={socket} setUser={this.setUser}/>
+                    <LoginForm socket={socket} setUser={this.setUser} />
                     :
                     <Game socket={socket} user={user} connectedUsers={connectedUsers} centerDeck={centerDeck}/>
                 }
