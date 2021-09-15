@@ -96,8 +96,6 @@ export default class LoginForm extends Component {
                     <Button type="submit" className="joinBtn" onClick={this.handleJoin} disabled={joined}> Join Game </Button>
                     <p/>
                     <Button type="submit" onClick={this.handleStart} disabled={!joined}>Start Game</Button>
-                    <p/>
-                    <Button type="submit" value="END GAME" variant="danger" onClick={this.handleTempEnd}>End Game</Button>
                 </form>
             </div>
         )
