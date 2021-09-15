@@ -117,7 +117,7 @@ module.exports = function(socket) {
             connectedUsers = removeUser(connectedUsers, socket.user.name)
             userCount--
 
-            io.emit(USER_DISCONNECTED, connectedUsers)
+            updateUsers(connectedUsers)
             console.log("Disconnect")
             console.log(disconnectedUsers)
         }
