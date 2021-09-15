@@ -147,12 +147,12 @@ textarea {
 }
 
 .info-panel {
-  color: black;
+  color: white;
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 60%;
-  background-color: burlywood;
+  background-color: #5d5d8a;
 }
 
 .info-box {
@@ -205,7 +205,7 @@ textarea {
 .god {
   justify-content: center;
   flex-grow: 1;
-  background-color: red;
+  background-color: #5d5d8a;
   display: flex;
 }
 
