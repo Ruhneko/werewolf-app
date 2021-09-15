@@ -18,6 +18,7 @@ export default class PlayerCard extends Component {
 
         this.handleLook = this.handleLook.bind(this)
         this.handleLook2 = this.handleLook2.bind(this)
+        this.getWerewolves = this.getWerewolves.bind(this)
     }
 
     componentDidMount(){
@@ -46,6 +47,18 @@ export default class PlayerCard extends Component {
             case "ROLE_VILLAGER": return ROLE_VILLAGER_IMAGE; break
             default: return HIDDEN_IMAGE
         }
+    }
+
+    getWerewolves()
+    {
+        const {connectedUsers} = this.props
+        let werewolves = 0
+        Object.keys(connectedUsers).map(key =>{
+            if(connectedUsers[key].role == "ROLE_WEREWOLF"){
+                werewolves++
+            }
+        })
+        return werewolves
     }
     
     render() {
@@ -81,7 +94,7 @@ export default class PlayerCard extends Component {
             <div className="player-card" style={divStyle}>
                 <div className="player-card content">{text}</div>
                 <PlayerButton isCenterDeck={true} turn = {turn}  user={user} centerDeck={centerDeck} 
-                handleLook={this.handleLook} handleLook2={this.handleLook2}/>
+                handleLook={this.handleLook} handleLook2={this.handleLook2} getWerewolves={this.getWerewolves}/>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function({isCenterDeck, turn, cardAccount, user, handleLook, handleRob, handleVote, handleLook2, centerDeck}){
+export default function({isCenterDeck, turn, cardAccount, user, handleLook, handleRob, handleVote, handleLook2, centerDeck, getWerewolves}){
 
     if(!isCenterDeck){
         if(turn == "START_VOTE" && cardAccount.id != user.id){
@@ -25,7 +25,7 @@ export default function({isCenterDeck, turn, cardAccount, user, handleLook, hand
         }
     }
     else{
-        if(turn == "ROLE_WEREWOLF" &&  user.role == "ROLE_WEREWOLF" && user.playerDone == false && centerDeck.length >= 1){
+        if(turn == "ROLE_WEREWOLF" &&  user.role == "ROLE_WEREWOLF" && user.playerDone == false && centerDeck.length >= 1 && getWerewolves() < 2){
             return(
                 <button className="look-button" onClick={()=>handleLook(user, 1)}>Look at Center</button>
             )

@@ -29,7 +29,7 @@ export default class PlayArea extends Component {
                 <div className="god">{god}</div>
                 <div className="playArea-row">
                    {Cards}
-                   <CenterDeck socket={socket} turn={turn} user={user} centerDeck={centerDeck}/>
+                   <CenterDeck socket={socket} turn={turn} user={user} centerDeck={centerDeck} connectedUsers={connectedUsers}/>
                 </div>        
             </div>
         )

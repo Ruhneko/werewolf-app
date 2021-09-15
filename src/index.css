@@ -205,11 +205,12 @@ textarea {
 .god {
   justify-content: center;
   flex-grow: 1;
-  background-color: #5d5d8a;
+  background-color: #b3b2ca;
   display: flex;
 }
 
 .timer {
+  background: #5d5d8a; 
   justify-content: center;
   flex-grow: 1;
   font-size: 150%;

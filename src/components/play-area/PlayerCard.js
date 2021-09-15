@@ -19,6 +19,7 @@ export default class PlayerCard extends Component {
         this.handleRob = this.handleRob.bind(this)
         this.handleVote = this.handleVote.bind(this)
         this.getVotes = this.getVotes.bind(this)
+  
     }
 
     handleLook(userID){
@@ -58,6 +59,8 @@ export default class PlayerCard extends Component {
         })
         return votes
     }
+
+  
 
     render() {
         const {socket, turn, cardAccount, user} = this.props
