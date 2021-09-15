@@ -63,7 +63,7 @@ module.exports = function(socket) {
 
     //Verify Username
     socket.on(GAME_START, ()=>{
-        if (userCount >= 3) {
+        if (userCount >= 3 && userCount <=6) {
             console.log("Game has started.")
             werewolfGame = new WerewolfGame(connectedUsers, updateUsers, resetAll)
             gameStart = true

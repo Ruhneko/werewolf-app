@@ -76,7 +76,8 @@ export default class LoginForm extends Component {
 
     render(){
 
-        const { nickname, error, joined } = this.state
+        const { nickname, error, joined} = this.state
+        const {connectedUsers} = this.props
         return(
             <div className='login'>
                 <form className="login-form" >
@@ -96,6 +97,7 @@ export default class LoginForm extends Component {
                     <Button type="submit" className="joinBtn" onClick={this.handleJoin} disabled={joined}> Join Game </Button>
                     <p/>
                     <Button type="submit" onClick={this.handleStart} disabled={!joined}>Start Game</Button>
+                    <p> {connectedUsers ? "Currently Connected Users(3-6 to start): " +  Object.keys(connectedUsers).length : null }</p>                   
                 </form>
             </div>
         )
