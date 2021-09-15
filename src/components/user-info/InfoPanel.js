@@ -84,7 +84,7 @@ export default class InfoPanel extends Component {
                         <div className="vote-tag">Vote:</div>
                         {
                             turn == "DISCUSSION"
-                            ? <button onClick={()=>this.skipVote()} disabled={skip}>Skip Vote</button>
+                            ? <button onClick={()=>this.skipVote()} disabled={skip}>Skip to Vote</button>
                             : null
                         }
                         <div className="vote-main">{user.voteID}</div>

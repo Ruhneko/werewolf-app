@@ -78,7 +78,7 @@ class WerewolfGame {
                 this.players[p].playerDone = true
             }
         })
-        this.updateUsers(this.players)
+        //this.updateUsers(this.players)
     }
 
     rob(robber, robbed){
@@ -128,7 +128,7 @@ class WerewolfGame {
                 this.players[p].role = this.players[p].swappedRole
             }
         })
-        this.updateUsers(this.players)
+        //this.updateUsers(this.players)
     }
 
     mainGame(){
@@ -164,32 +164,59 @@ class WerewolfGame {
         let playerlist = this.getPlayerList();
         let voteList = [];
         let high = 0;
-        let wwVote = false;
+        let werewolf_in_game = false;
+        let winners = "NO ONE"
         let message = ""
+
         playerlist.forEach(p => {
-            if(this.players[p].voteCount > high){
-                high = this.players[p].voteCount;
-                voteList.length = 0;
-                voteList.push(this.players[p]);
-            }
-            else if(this.players[p].voteCount ==  high) {
-                voteList.push(this.players[p]);
+            let vote = this.players[p].voteID;
+            this.players[vote].voteCount += 1;
+
+            console.log(this.players[p].role)
+            if(this.players[p].role == "ROLE_WEREWOLF"){
+                werewolf_in_game = true;
             }
         })
+
+        playerlist.forEach(p => {
+            if (this.players[p].voteCount > high) {
+                high = this.players[p].voteCount
+                voteList.length = 0
+                voteList.push(this.players[p])
+            } else if (this.players[p].voteCount == high) {
+                voteList.push(this.players[p])
+            }
+            console.log(voteList)
+        })
+
+        console.log("werewolf_in_game:", werewolf_in_game)
+        console.log("playerlist:", playerlist)
+        console.log(voteList);
+
+        if (werewolf_in_game) {
+            winners = "WEREWOLVES"
+        } else if (this.getPlayerCount() === voteList.length) {
+            winners = "VILLAGERS"
+        }
+
         voteList.forEach(p => {
-            if(voteList.role === this.ROLE_WEREWOLF){
-                wwVote = true;
+            console.log(p.role)
+            if (p.role === "ROLE_WEREWOLF") {
+                winners = "VILLAGERS"
             }
         })
+
+        message = "And the winner is... " + winners;
+        /*
         if(wwVote){
             message = "And the winner is... VILLAGERS"
         } else{
-            if(high == 1){
+            if(high === 1){
                 message = "And the winner is... VILLAGERS"
             } else{
                 message = "And the winner is... WEREWOLVES"
             }
-        }
+        } */
 
         io.emit(CHANGE_TURN,"RESULTS", 20, message)
         setTimeout(() =>this.endGame(),20000)
